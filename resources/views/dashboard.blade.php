@@ -275,6 +275,128 @@
     </div>
 
     <!-- Grid Film -->
+    @if(!$isFiltering)
+        @if($trendingFilms->count() > 0)
+            <div class="mb-5">
+                <h4 style="color: #fff; font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.3rem;">🔥</span> Trending Movies
+                </h4>
+                <div class="film-grid">
+                    @foreach($trendingFilms as $film)
+                        <div class="film-card">
+                            <div class="film-poster-container">
+                                @if($film->poster)
+                                    <img src="{{ Storage::url($film->poster) }}" alt="{{ $film->judul }}" class="film-poster">
+                                @else
+                                    <div class="film-poster-placeholder">
+                                        <span class="icon">🎬</span>
+                                        <span style="font-size: 0.75rem; font-weight: 500; text-transform: uppercase;">{{ $film->judul }}</span>
+                                    </div>
+                                @endif
+                                
+                                <!-- Rating Rata-rata -->
+                                @php
+                                    $avgRating = $film->averageRating();
+                                @endphp
+                                <div class="film-rating-badge">
+                                    <span>⭐</span>
+                                    <span>{{ $avgRating > 0 ? number_format($avgRating, 1) : '-' }}</span>
+                                </div>
+                            </div>
+
+                            <div class="film-info">
+                                <div class="film-genres">
+                                    @forelse($film->genres as $genre)
+                                        <span class="film-genre-tag">{{ $genre->nama_genre }}</span>
+                                    @empty
+                                        <span class="film-genre-tag" style="color: var(--muted); background: rgba(255,255,255,0.05);">Uncategorized</span>
+                                    @endforelse
+                                </div>
+                                
+                                <h4 class="film-title" title="{{ $film->judul }}">{{ $film->judul }}</h4>
+                                
+                                <div class="film-meta">
+                                    <span>📅 {{ $film->tahun_rilis ?? 'N/A' }}</span>
+                                    <span>⏱️ {{ $film->durasi ? $film->durasi . 'm' : 'N/A' }}</span>
+                                </div>
+
+                                <a href="{{ route('films.show', $film->slug) }}" class="btn btn-secondary btn-sm film-action-btn">
+                                    Lihat Detail
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        @if($topRatingFilms->count() > 0)
+            <div class="mb-5">
+                <h4 style="color: #fff; font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.3rem;">🏆</span> Top Rating Movies
+                </h4>
+                <div class="film-grid">
+                    @foreach($topRatingFilms as $film)
+                        <div class="film-card">
+                            <div class="film-poster-container">
+                                @if($film->poster)
+                                    <img src="{{ Storage::url($film->poster) }}" alt="{{ $film->judul }}" class="film-poster">
+                                @else
+                                    <div class="film-poster-placeholder">
+                                        <span class="icon">🎬</span>
+                                        <span style="font-size: 0.75rem; font-weight: 500; text-transform: uppercase;">{{ $film->judul }}</span>
+                                    </div>
+                                @endif
+                                
+                                <!-- Rating Rata-rata -->
+                                @php
+                                    $avgRating = $film->averageRating();
+                                @endphp
+                                <div class="film-rating-badge">
+                                    <span>⭐</span>
+                                    <span>{{ $avgRating > 0 ? number_format($avgRating, 1) : '-' }}</span>
+                                </div>
+                            </div>
+
+                            <div class="film-info">
+                                <div class="film-genres">
+                                    @forelse($film->genres as $genre)
+                                        <span class="film-genre-tag">{{ $genre->nama_genre }}</span>
+                                    @empty
+                                        <span class="film-genre-tag" style="color: var(--muted); background: rgba(255,255,255,0.05);">Uncategorized</span>
+                                    @endforelse
+                                </div>
+                                
+                                <h4 class="film-title" title="{{ $film->judul }}">{{ $film->judul }}</h4>
+                                
+                                <div class="film-meta">
+                                    <span>📅 {{ $film->tahun_rilis ?? 'N/A' }}</span>
+                                    <span>⏱️ {{ $film->durasi ? $film->durasi . 'm' : 'N/A' }}</span>
+                                </div>
+
+                                <a href="{{ route('films.show', $film->slug) }}" class="btn btn-secondary btn-sm film-action-btn">
+                                    Lihat Detail
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <div class="mb-4">
+            <h4 style="color: #fff; font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.3rem;">🎞️</span> Semua Film
+            </h4>
+        </div>
+    @else
+        <div class="mb-4">
+            <h4 style="color: #fff; font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.3rem;">🔍</span> Hasil Pencarian
+            </h4>
+        </div>
+    @endif
+
     @if($films->count() > 0)
         <div class="film-grid">
             @foreach($films as $film)

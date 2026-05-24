@@ -12,6 +12,23 @@ class UserFilmController extends Controller
     {
         $query = Film::with(['genres', 'reviews']);
 
+        $isFiltering = $request->filled('search') || $request->filled('genre');
+
+        $trendingFilms = collect();
+        $topRatingFilms = collect();
+
+        if (!$isFiltering) {
+            $trendingFilms = Film::withCount('reviews')
+                ->orderByDesc('reviews_count')
+                ->take(4)
+                ->get();
+
+            $topRatingFilms = Film::withAvg('reviews', 'rating')
+                ->orderByDesc('reviews_avg_rating')
+                ->take(4)
+                ->get();
+        }
+
         // Search Film
         if ($request->filled('search')) {
             $search = $request->search;
@@ -36,7 +53,7 @@ class UserFilmController extends Controller
         $watchlistCount = auth()->user()->watchlists()->count();
         $reviewCount = auth()->user()->reviews()->count();
 
-        return view('dashboard', compact('films', 'genres', 'watchlistCount', 'reviewCount'));
+        return view('dashboard', compact('films', 'genres', 'watchlistCount', 'reviewCount', 'trendingFilms', 'topRatingFilms', 'isFiltering'));
     }
 
     public function show(Film $film)
