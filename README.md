@@ -1,58 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎬 FilmKu — Sistem Informasi Review dan Rating Film
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Tugas Akhir berbasis web menggunakan **Laravel 11** dan **MySQL**
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Fitur
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 👤 Admin
+- Login khusus admin
+- Dashboard statistik (total film, genre, user, review)
+- CRUD Film (dengan upload poster)
+- CRUD Genre
+- Kelola User (ubah role, hapus)
+- Hapus review tidak pantas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🙋 User *(coming soon)*
+- Register / Login
+- Lihat & cari film
+- Filter berdasarkan genre
+- Rating bintang & review film
+- Watchlist film favorit
+- Edit profil
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Teknologi
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Stack | Versi |
+|-------|-------|
+| PHP | 8.3 |
+| Laravel | 11.x |
+| MySQL | 8.x |
+| Laragon | (rekomendasi) |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 🚀 Cara Setup Project (Setelah Clone)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+### 1. Clone repository
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <link-repo-github>
+cd projectpwf
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install dependencies PHP
+```bash
+composer install
+```
 
-## Contributing
+### 3. Buat file `.env`
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Generate App Key
+```bash
+php artisan key:generate
+```
 
-## Code of Conduct
+### 5. Konfigurasi database
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Buka file `.env` dan sesuaikan:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=projectpwf
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Security Vulnerabilities
+> Pastikan database **`projectpwf`** sudah dibuat di phpMyAdmin terlebih dahulu.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 6. Jalankan migrasi & seeder
+```bash
+php artisan migrate --seed
+```
 
-## License
+Perintah ini akan:
+- Membuat semua tabel database
+- Membuat akun admin default secara otomatis
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 7. Buat storage link (untuk poster film)
+```bash
+php artisan storage:link
+```
+
+### 8. Jalankan server
+```bash
+php artisan serve
+```
+
+Buka browser → [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+---
+
+## 🔐 Akun Admin Default
+
+| Field | Value |
+|-------|-------|
+| Email | `admin@filmku.com` |
+| Password | `password` |
+
+> **Penting:** Segera ganti password setelah pertama kali login!
+
+URL Admin: [http://127.0.0.1:8000/admin/login](http://127.0.0.1:8000/admin/login)
+
+---
+
+## 📁 Struktur Database
+
+| Tabel | Keterangan |
+|-------|------------|
+| `users` | Data user & admin |
+| `films` | Data film |
+| `genres` | Kategori genre |
+| `film_genre` | Relasi many-to-many film & genre |
+| `reviews` | Review & rating dari user |
+| `watchlists` | Daftar film favorit user |
+
+---
+
+## ⚠️ Catatan untuk Pengguna Laragon
+
+Jika perintah `php` tidak dikenali di terminal, gunakan path lengkap:
+
+```powershell
+& "C:\laragon\bin\php\php-8.3.30-Win32-vs16-x64\php.exe" artisan serve
+```
+
+Atau aktifkan PHP di PATH: **Laragon → klik kanan → PHP → Add to PATH** lalu restart terminal.
+
+---
+
+## 👥 Kelompok 7
+
+> Tugas Akhir Mata Kuliah Pemrograman Web Framework
