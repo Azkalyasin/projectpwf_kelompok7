@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Controllers
-use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FilmController;
 use App\Http\Controllers\Admin\GenreController;
@@ -15,23 +14,33 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+use App\Http\Controllers\UserFilmController;
+use App\Http\Controllers\UserReviewController;
+use App\Http\Controllers\WatchlistController;
+
 // ─── User Routes (Breeze) ─────────────────────────────────────
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [UserFilmController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Detail Film
+    Route::get('/films/{film:slug}', [UserFilmController::class, 'show'])->name('films.show');
+
+    // Review & Rating
+    Route::post('/films/{film:slug}/reviews', [UserReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/reviews/{review}', [UserReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::get('/my-reviews', [UserReviewController::class, 'myReviews'])->name('reviews.my-reviews');
+
+    // Watchlist
+    Route::get('/watchlist', [WatchlistController::class, 'index'])->name('watchlist.index');
+    Route::post('/films/{film:slug}/watchlist', [WatchlistController::class, 'toggle'])->name('watchlist.toggle');
 });
 
 // ─── Admin Routes ─────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('login', [AdminLoginController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [AdminLoginController::class, 'login'])->name('login.post');
-    Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
-
     Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('films', FilmController::class)->except(['show']);

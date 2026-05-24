@@ -486,7 +486,7 @@
                 <div class="role">Administrator</div>
             </div>
         </div>
-        <form class="logout-form" method="POST" action="{{ route('admin.logout') }}">
+        <form class="logout-form" method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="btn-logout">🚪 Keluar</button>
         </form>

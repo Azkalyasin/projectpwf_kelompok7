@@ -431,12 +431,12 @@
         </a>
 
         <div class="nav-section">Koleksi</div>
-
-        <a href="#" class="nav-link">
+ 
+        <a href="{{ route('watchlist.index') }}" class="nav-link {{ request()->routeIs('watchlist.index') ? 'active' : '' }}">
             <span class="nav-icon">📑</span> Watchlist
         </a>
-
-        <a href="#" class="nav-link">
+ 
+        <a href="{{ route('reviews.my-reviews') }}" class="nav-link {{ request()->routeIs('reviews.my-reviews') ? 'active' : '' }}">
             <span class="nav-icon">⭐</span> Review Saya
         </a>
 
@@ -446,6 +446,13 @@
            class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
             <span class="nav-icon">⚙️</span> Profil
         </a>
+
+        @if(auth()->user()->isAdmin())
+            <div class="nav-section">Admin</div>
+            <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                <span class="nav-icon">🛡️</span> Panel Admin
+            </a>
+        @endif
     </nav>
 
     <div class="sidebar-footer">
@@ -459,7 +466,7 @@
             </div>
             <div>
                 <div class="name">{{ auth()->user()->name }}</div>
-                <div class="role">Member</div>
+                <div class="role">{{ auth()->user()->isAdmin() ? 'Administrator' : 'Member' }}</div>
             </div>
         </div>
         <form class="logout-form" method="POST" action="{{ route('logout') }}">

@@ -11,7 +11,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return redirect()->route('admin.login')->with('error', 'Akses ditolak. Halaman khusus admin.');
+            return redirect()->route('login')->with('error', 'Akses ditolak. Halaman khusus admin.');
         }
 
         return $next($request);
