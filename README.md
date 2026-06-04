@@ -104,7 +104,7 @@ Buka browser → [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 > **Penting:** Segera ganti password setelah pertama kali login!
 
-URL Admin: [http://127.0.0.1:8000/admin/login](http://127.0.0.1:8000/admin/login)
+URL Admin: [http://127.0.0.1:8000/admin/login](http://127.0.0.1:8000/admin)
 
 ---
 
